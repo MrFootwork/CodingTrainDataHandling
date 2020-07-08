@@ -9,6 +9,10 @@ const IMAGES = [
  * 	  Fetch an array of images (parallel)
  * |||||||||||||||||||||||||||||
  */
+catchImagesParallel(IMAGES).then(console.log('catchImagesParallel running...')).catch(error => {
+	console.log('There occurred an error! What the heck happened?')
+	console.error(error)
+})
 async function catchImagesParallel(arrImages) {
 	for (let i = 0; i < arrImages.length; i++) {
 		const imageTag = document.createElement('img')
@@ -17,18 +21,10 @@ async function catchImagesParallel(arrImages) {
 	}
 	let responses = []
 	let blobs = []
-	await Promise.all(
-		arrImages.map(async (path, i) => {
-			responses[i] = await fetch(path[1])
-			return responses[i]
-		})
-	)
-	await Promise.all(
-		responses.map(async (response, i) => {
-			blobs[i] = await response.blob()
-			return blobs[i]
-		})
-	)
+
+	await Promise.all(arrImages.map(async (path, i) => (responses[i] = await fetch(path[1]))))
+	await Promise.all(responses.map(async (response, i) => (blobs[i] = await response.blob())))
+
 	for (let i = 0; i < arrImages.length; i++) {
 		const imageTag = document.getElementById(arrImages[i][0])
 		imageTag.src = URL.createObjectURL(blobs[i])
@@ -57,10 +53,7 @@ async function catchAllImages(arrImages) {
 		imageTag.style.width = '300px'
 	}
 }
-catchImagesParallel(IMAGES).catch(error => {
-	console.log('There occurred an error! What the heck happened?')
-	console.error(error)
-})
+
 /**||||||||||||||||||||||||||||||
  * 			Fetch a picture
  * |||||||||||||||||||||||||||||
