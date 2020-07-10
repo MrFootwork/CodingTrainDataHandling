@@ -9,10 +9,12 @@ const IMAGES = [
  * 	  Fetch an array of images (parallel)
  * |||||||||||||||||||||||||||||
  */
-catchImagesParallel(IMAGES).then(console.log('catchImagesParallel running...')).catch(error => {
-	console.log('There occurred an error! What the heck happened?')
-	console.error(error)
-})
+// catchImagesParallel(IMAGES) //
+// 	.then(console.log('catchImagesParallel running...'))
+// 	.catch(error => {
+// 		console.log('There occurred an error! What the heck happened?')
+// 		console.error(error)
+// 	})
 async function catchImagesParallel(arrImages) {
 	for (let i = 0; i < arrImages.length; i++) {
 		const imageTag = document.createElement('img')

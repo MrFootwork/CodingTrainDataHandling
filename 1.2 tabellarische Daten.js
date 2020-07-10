@@ -12,8 +12,62 @@
  * ===> Chart.js <===
  */
 
-//TODO: Use own CSV data to draw
-//TODO: use p5.js to draw myself on the canvas
+//TODO Use own CSV data to draw
+//TODO: see video for more TODOs
+
+chartIndices()
+async function chartIndices() {
+	const data = await getIndices()
+	const ctx = document.getElementById('MSCIchart').getContext('2d')
+	const chart = new Chart(ctx, {
+		type    : 'line',
+		data    : {
+			labels   : data.xs,
+			datasets : [
+				{
+					label           : 'MSCI AC Americas Standard',
+					data            : data.ys,
+					fill            : false,
+					backgroundColor : 'rgba(255, 99, 132, 0.2)',
+					borderColor     : 'rgba(255, 99, 132, 1)',
+					borderWidth     : 2,
+				},
+			],
+		},
+		options : {
+			scales : {
+				yAxes : [
+					{
+						ticks : {
+							callback : function(value, index, values) {
+								return value
+							},
+						},
+					},
+				],
+			},
+		},
+	})
+}
+
+async function getIndices() {
+	const xs = []
+	const ys = []
+
+	const response = await fetch('AC Americas Standard.csv')
+	const data = await response.text()
+	const table = data.split('\n').splice(1)
+
+	table.forEach(row => {
+		const column = row.split(',')
+		const date = column[0]
+		const index = column[1]
+		xs.push(date)
+		ys.push(+index)
+	})
+	console.log(xs, ys)
+	return { xs, ys }
+}
 
 chartIt()
 
@@ -66,6 +120,6 @@ async function getData() {
 		xs.push(year)
 		ys.push(+temp + 14)
 	})
-	console.log({ xs, ys })
+	console.log(xs, ys)
 	return { xs, ys }
 }
