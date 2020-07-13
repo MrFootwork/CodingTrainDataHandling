@@ -18,7 +18,7 @@ let marker = L.marker([ 0, 0 ], { icon: issIcon }).addTo(mymap)
 var pathISS = []
 var pathStyle = {
 	color   : '#ff7800',
-	weight  : 5,
+	weight  : 100,
 	opacity : 0.65,
 }
 var path
